@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Điều khiển Bơm & pH</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+    }
+
+    input {
+      padding: 8px;
+      font-size: 16px;
+      width: 80px;
+      text-align: center;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>🚰 Điều khiển Bơm & Gửi pH</h2>
+
+  <div>
+    <label>Bơm 1:</label><br>
+    <button onclick="setPumpStatus('on')">Bật</button>
+    <button onclick="setPumpStatus('off')">Tắt</button>
+    <div class="status">Trạng thái hiện tại: <span id="pumpStatus">Đang tải...</span></div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <label>Nhập giá trị pH:</label>
+    <input type="number" step="0.1" id="inputPH" value="7" />
+    <button onclick="sendPH()">Gửi pH</button>
+    <div class="status">pH hiện tại: <span id="phStatus">Đang tải...</span></div>
+  </div>
+
+  <!-- Firebase SDK v8.10.0 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <script>
+    // Cấu hình Firebase
+    var firebaseConfig = {
+      apiKey: "AIzaSyBK72-dgrEyvgOoYYUfZXb8s9UXameRKk0",
+      authDomain: "nuoitom-72b7f.firebaseapp.com",
+      projectId: "nuoitom-72b7f",
+      databaseURL: "https://nuoitom-72b7f-default-rtdb.firebaseio.com",
+      storageBucket: "nuoitom-72b7f.appspot.com",
+      messagingSenderId: "595302763573",
+      appId: "1:595302763573:web:3d49f82f1d9b539bc2f57c",
+      measurementId: "G-79QVTGEKMC"
+    };
+
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+
+    // Gửi trạng thái bơm vào /pump1
+    function setPumpStatus(status) {
+      database.ref("pump1").set(status);
+    }
+
+    // Gửi giá trị pH từ input vào /ph
+    function sendPH() {
+      const phValue = parseFloat(document.getElementById("inputPH").value);
+      if (!isNaN(phValue)) {
+        database.ref("ph").set(phValue);
+      }
+    }
+
+    // Lắng nghe trạng thái bơm realtime từ /pump1
+    database.ref("pump1").on("value", function(snapshot) {
+      var status = snapshot.val();
+      document.getElementById("pumpStatus").innerText = status ? status.toUpperCase() : "Không có dữ liệu";
+    });
+
+    // Lắng nghe giá trị pH realtime từ /ph
+    database.ref("ph").on("value", function(snapshot) {
+      var ph = snapshot.val();
+      document.getElementById("phStatus").innerText = ph !== null ? ph : "Không có dữ liệu";
+    });
+  </script>
+</body>
+</html>
