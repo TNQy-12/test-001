@@ -60,7 +60,6 @@ form {
   width: 100%;
   margin: 0 auto;
   height: 100%;
-  display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   grid-column: 1 / 2;

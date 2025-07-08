@@ -16,6 +16,9 @@
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
   </head>
+
+
+  
   <body>
     <main>
       <div class="box">
@@ -23,9 +26,8 @@
           <div class="forms-wrap">
             <form action="index.html" autocomplete="off" class="sign-in-form">
               <div class="logo">
-                <h4>Biology Shrimp Farming System</h4>
+                <h4 style="font-size:33px;">Biology Shrimp Farming System</h4>
               </div>
-
               <div class="heading">
                 <h2>Welcome Back </h2>
                 <h6>Not registred yet?</h6>
@@ -55,7 +57,9 @@
                   <label>Password</label>
                 </div>
 
-                <input type="submit" value="Sign In" class="sign-btn" />
+                <input type="submit" value="Sign In" class="sign-btn" /><div style="text-align:center; margin-top:10px;">
+  <button id="viewBtn" type="button" class="sign-btn" style="width: 100%;">View System</button>
+</div>
 
                 <p class="text">
                   Mang đến tiện ích năng lượng cho hệ thống của bạn !
@@ -246,6 +250,10 @@ function autoSlide() {
 }
 
 setInterval(autoSlide, 2500); 
+
+document.getElementById("viewBtn").onclick = function() {
+  window.location.href = "view.html";
+};
 
     </script>
   </body>
